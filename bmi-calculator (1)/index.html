@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>BMI Calculator - Check Your Health Score</title>
+
+    <!-- Google Font: Poppins -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+
+  <body>
+    <div class="container">
+      <header>
+        <h1 class="hero-title">
+          BMI Calculator — <span>Check Your Health Score</span>
+        </h1>
+      </header>
+
+      <main>
+        <section class="card" aria-label="BMI Calculator">
+          <div class="card-content">
+            <!-- Left: Form -->
+            <div class="panel" role="form" aria-labelledby="calcTitle">
+              <h2 id="calcTitle" class="section-title">Enter Your Details</h2>
+              <p class="muted">Choose your preferred units. We’ll convert automatically.</p>
+
+              <div class="form-grid">
+                <!-- Height -->
+                <div class="field">
+                  <label for="heightValue">
+                    <!-- Ruler Icon -->
+                    <svg class="icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                      <path d="M4 4h16v16H4V4Zm4 0v16M8 8h4M8 12h3M8 16h2" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+                    </svg>
+                    Height
+                  </label>
+                  <div class="input-wrap">
+                    <input id="heightValue" type="number" min="0" step="0.1" placeholder="e.g. 170" inputmode="decimal" aria-describedby="heightHelp" />
+                    <select id="heightUnit" aria-label="Height unit">
+                      <option value="cm" selected>cm</option>
+                      <option value="in">inch</option>
+                    </select>
+                  </div>
+                  <div id="heightHelp" class="subtext">Enter your height in centimeters or inches.</div>
+                </div>
+
+                <!-- Weight -->
+                <div class="field">
+                  <label for="weightValue">
+                    <!-- Scale Icon -->
+                    <svg class="icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                      <path d="M7 20h10a3 3 0 0 0 3-3V9a4 4 0 0 0-4-4H8A4 4 0 0 0 4 9v8a3 3 0 0 0 3 3Z" stroke="currentColor" stroke-width="1.8" />
+                      <path d="M12 12.5V8m0 0-2 2" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    Weight
+                  </label>
+                  <div class="input-wrap">
+                    <input id="weightValue" type="number" min="0" step="0.1" placeholder="e.g. 65" inputmode="decimal" aria-describedby="weightHelp" />
+                    <select id="weightUnit" aria-label="Weight unit">
+                      <option value="kg" selected>kg</option>
+                      <option value="lb">lbs</option>
+                    </select>
+                  </div>
+                  <div id="weightHelp" class="subtext">Enter your weight in kilograms or pounds.</div>
+                </div>
+              </div>
+
+              <!-- Hidden metric fields for exact bmiCalculator() compatibility -->
+              <input type="hidden" id="height" />
+              <input type="hidden" id="weight" />
+
+              <div class="actions">
+                <button id="calcBtn" class="btn" aria-label="Calculate BMI">
+                  Calculate
+                </button>
+                <span id="errorMsg" class="subtext" role="alert" style="display:none;color:#b91c1c;">Please enter valid height and weight.</span>
+              </div>
+            </div>
+
+            <!-- Right: Result -->
+            <div class="panel" aria-live="polite">
+              <h2 class="section-title">Your Result</h2>
+              <div class="result-wrap">
+                <div class="result-top">
+                  <div>
+                    <div class="muted" style="margin-bottom:6px;">BMI</div>
+                    <div id="bmiValue" class="bmi-value">—</div>
+                  </div>
+                  <div id="bmiBadge" class="badge" aria-label="BMI Category">Awaiting</div>
+                </div>
+
+                <!-- Disabled output field that bmiCalculator() writes into -->
+                <div class="output-field">
+                  <input id="result" class="output" type="text" placeholder="BMI result" disabled />
+                </div>
+
+                <div class="gauge">
+                  <div class="gauge-scale" aria-hidden="true">
+                    <div id="pointer" class="gauge-pointer" style="--x: 0%;">
+                      <div class="pointer-dot" title="Your BMI position"></div>
+                    </div>
+                  </div>
+                  <div class="gauge-legend" aria-hidden="true">
+                    <span class="chip"><span class="swatch swatch-teal"></span> Underweight &lt; 18.5</span>
+                    <span class="chip"><span class="swatch swatch-blue"></span> Normal 18.5–24.9</span>
+                    <span class="chip"><span class="swatch swatch-orange"></span> Overweight 25–29.9</span>
+                    <span class="chip"><span class="swatch swatch-orange-strong"></span> Obese ≥ 30</span>
+                  </div>
+                </div>
+
+                <p id="tipText" class="muted" style="margin-top:6px;">
+                  Enter your details and hit Calculate to see your BMI and health tips.
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="info" aria-label="About BMI">
+          <p>
+            <strong>What is BMI?</strong> Body Mass Index (BMI) estimates body fat based on height and weight.
+            While it’s a helpful screening tool, it doesn’t account for muscle mass, bone density, or distribution of fat.
+          </p>
+          <p>
+            <strong>Healthy Habits:</strong> Aim for balanced meals, regular exercise, quality sleep, and hydration.
+            Consult a healthcare professional for personalized advice—especially if your BMI is outside the normal range.
+          </p>
+        </section>
+
+        <section class="categories" aria-label="BMI Categories">
+          <h2 class="section-title">BMI Categories</h2>
+          <div class="cat-grid">
+            <div class="cat-box under">
+              Underweight
+              <span class="range">Less than 18.5</span>
+            </div>
+            <div class="cat-box normal">
+              Normal
+              <span class="range">18.5 – 24.9</span>
+            </div>
+            <div class="cat-box over">
+              Overweight
+              <span class="range">25 – 29.9</span>
+            </div>
+            <div class="cat-box obese">
+              Obese
+              <span class="range">30 and above</span>
+            </div>
+          </div>
+        </section>
+      </main>
+
+      <footer>
+        Built with ❤️ for a healthier you.
+      </footer>
+    </div>
+
+    <script src="script.js"></script>
+  </body>
+</html>
